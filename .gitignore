@@ -1,0 +1,11 @@
+/node_modules
+/dist
+/logs/*.log
+/common
+
+.env
+.env.local
+.env.dev
+.env.stg
+.env.development
+.env.production
