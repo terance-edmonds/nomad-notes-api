@@ -5,10 +5,11 @@ const schemaValidation = require('../validation/user');
 const crypt = require('../utils/crypt');
 const validate = require('../utils/validate');
 const config = require('../config');
-const { default: mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 const ResetToken = require('../database/models/reset-tokens');
 const mail = require('../mail');
 const otpGenerator = require('otp-generator');
+const utils = require('../utils');
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -118,10 +119,7 @@ module.exports = {
             const validation = validate(schemaValidation.get, params);
             if (validation?.error) return res.status(400).json(validation.error);
 
-            const user = await User.findOne(
-                { _id: new mongoose.Types.ObjectId(params.id) },
-                { password: false }
-            );
+            const user = await User.findOne({ _id: utils.mongoID(params.id) }, { password: false });
 
             if (!user) {
                 return res.status(404).json({
@@ -148,7 +146,7 @@ module.exports = {
 
             return res.status(200).json({
                 status: 'success',
-                data: 'user signed out'
+                message: 'user signed out'
             });
         } catch (error) {
             console.log(error);
@@ -200,7 +198,7 @@ module.exports = {
 
             return res.status(200).json({
                 status: 'success',
-                data: 'reset password email sent'
+                message: 'reset password email sent'
             });
         } catch (error) {
             console.log(error);
@@ -246,7 +244,7 @@ module.exports = {
 
             return res.status(200).json({
                 status: 'success',
-                data: 'password changed'
+                message: 'password changed'
             });
         } catch (error) {
             console.log(error);
