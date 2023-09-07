@@ -9,7 +9,7 @@ const routes = require('./routes');
 const app = express();
 
 // connect to mongoDB
-database.init();
+//database.init();
 
 // express in json format
 app.use(express.json());
@@ -20,6 +20,7 @@ app.use(compression());
 // cors
 app.use(
     cors({
+        origin: 'http://localhost:3000',
         credentials: true
     })
 );
