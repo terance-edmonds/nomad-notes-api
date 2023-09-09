@@ -46,8 +46,22 @@ module.exports = {
     },
     all: async (req, res) => {
         try {
-            const users = await User.find({ role: userUtils.roles.USER }, { password: false });
+            let query = req.query;
 
+            /* validate request data */
+            const validation = validate(schemaValidation.search, query);
+            if (validation?.error) return res.status(400).json(validation.error);
+
+            const users = await User.find(
+                {
+                    $or: [
+                        { name: { $regex: query.search, $options: 'i' } },
+                        { email: { $regex: query.search, $options: 'i' } }
+                    ],
+                    role: userUtils.roles.USER
+                },
+                { password: false }
+            );
             return res.status(200).json({
                 status: 'success',
                 data: users

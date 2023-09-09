@@ -5,12 +5,14 @@ const cookieParser = require('cookie-parser');
 const database = require('./database');
 const config = require('./config');
 const routes = require('./routes');
-const seedDB = require('./seed');
 
 const app = express();
 
 // connect to mongoDB
 database.init();
+
+// seed
+// database.seed();
 
 // express in json format
 app.use(express.json());
@@ -25,9 +27,6 @@ app.use(
         credentials: true
     })
 );
-
-// seed
-// seedDB();
 
 // cookie parser
 app.use(cookieParser());

@@ -69,7 +69,7 @@ module.exports = {
             });
         }
     },
-    all: async (req, res) => {
+    search: async (req, res) => {
         try {
             let body = req.body;
             let params = req.params;
@@ -79,7 +79,13 @@ module.exports = {
             const validation = validate(commonValidation.all, query);
             if (validation?.error) return res.status(400).json(validation.error);
 
-            const stories = await Story.find({}).limit(query.limit);
+            const stories = await Story.find({
+                $or: [
+                    { country: { $regex: query.search, $options: 'i' } },
+                    { city: { $regex: query.search, $options: 'i' } }
+                ],
+                approved: true
+            }).limit(query.limit);
 
             return res.status(200).json({
                 status: 'success',
@@ -93,20 +99,22 @@ module.exports = {
             });
         }
     },
-    search: async (req, res) => {
+    all: async (req, res) => {
         try {
+            let body = req.body;
+            let params = req.params;
             let query = req.query;
 
             /* validate request data */
-            const validation = validate(schemaValidation.search, query);
+            const validation = validate(commonValidation.all, query);
             if (validation?.error) return res.status(400).json(validation.error);
 
-            let options = {};
-
-            if (query?.country) options['country'] = { $regex: query.country, $options: 'i' };
-            if (query?.city) options['city'] = { $regex: query.city, $options: 'i' };
-
-            const stories = await Story.find(options).limit(query.limit);
+            const stories = await Story.find({
+                $or: [
+                    { country: { $regex: query.search, $options: 'i' } },
+                    { city: { $regex: query.search, $options: 'i' } }
+                ]
+            }).limit(query.limit);
 
             return res.status(200).json({
                 status: 'success',

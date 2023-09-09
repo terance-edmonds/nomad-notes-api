@@ -14,8 +14,7 @@ module.exports = {
         id: Joi.string().required()
     }),
     search: Joi.object().keys({
-        city: Joi.string().allow('', null),
-        country: Joi.string().allow('', null),
+        search: Joi.string().allow('', null),
         limit: Joi.number().integer().min(1).allow('', null)
     }),
     remove: Joi.object().keys({

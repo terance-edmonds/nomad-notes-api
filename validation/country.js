@@ -12,10 +12,9 @@ module.exports = {
     remove: Joi.object().keys({
         id: Joi.string().required()
     }),
-    request_reset: Joi.object().keys({
-        email: Joi.string()
-            .regex(/^\S+@\S+\.\S+$/)
-            .required()
+    search: Joi.object().keys({
+        search: Joi.string().allow('', null),
+        limit: Joi.number().integer().min(1).allow('', null)
     }),
     update: Joi.object().keys({
         name: Joi.string().required(),
