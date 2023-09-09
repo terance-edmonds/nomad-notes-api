@@ -15,9 +15,6 @@ module.exports = {
             .valid(...Object.values(userUtils.roles))
             .allow('', null)
     }),
-    get: Joi.object().keys({
-        id: Joi.string().required()
-    }),
     signin: Joi.object().keys({
         email: Joi.string().email().required(),
         password: Joi.string().required()
@@ -40,5 +37,11 @@ module.exports = {
         role: Joi.string()
             .valid(...Object.values(userUtils.roles))
             .allow('', null)
-    })
+    }),
+    get: Joi.object().keys({
+        id: Joi.string().required()
+    }),
+    remove: Joi.object().keys({
+        id: Joi.string().required()
+    }),
 };
