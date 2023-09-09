@@ -30,6 +30,11 @@ const storySchema = new Schema(
         image: {
             type: String,
             require: false
+        },
+        approved: {
+            type: Boolean,
+            require: false,
+            default: false
         }
     },
     { timestamps: true }

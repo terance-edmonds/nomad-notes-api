@@ -13,11 +13,13 @@ module.exports = {
         id: Joi.string().required()
     }),
     request_reset: Joi.object().keys({
-        email: Joi.string().email().required()
+        email: Joi.string()
+            .regex(/^\S+@\S+\.\S+$/)
+            .required()
     }),
     update: Joi.object().keys({
-        name: Joi.string().allow('', null),
-        description: Joi.string().allow('', null),
-        image: Joi.string().allow('', null)
+        name: Joi.string().required(),
+        description: Joi.string().required(),
+        image: Joi.string().required()
     })
 };
