@@ -5,6 +5,7 @@ module.exports = {
         id: Joi.string().required()
     }),
     all: Joi.object().keys({
+        search: Joi.string().allow('', null),
         limit: Joi.number().integer().min(1).allow('', null)
     })
 };

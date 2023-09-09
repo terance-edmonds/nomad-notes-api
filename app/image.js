@@ -10,7 +10,7 @@ module.exports = {
                 message: 'image uploaded',
                 data: {
                     file,
-                    url: `${config.server_urls.api}api/images/${file}`
+                    url: `${config.server_urls.api}/api/images/${file}`
                 }
             });
         } catch (error) {

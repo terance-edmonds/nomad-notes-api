@@ -27,10 +27,10 @@ const config = {
         hash_refresh: HASH_REFRESH
     },
     client_urls: {
-        app: formatUrl(APP_URL)
+        app: APP_URL
     },
     server_urls: {
-        api: formatUrl(API_URL)
+        api: API_URL
     },
     mail: {
         email: MAIL_EMAIL,
@@ -38,12 +38,6 @@ const config = {
         password: MAIL_PASSWORD
     }
 };
-
-function formatUrl(url) {
-    if (!url) return '';
-
-    return url.slice(-1) === '/' ? url : url + '/';
-}
 
 // console.log(config);
 module.exports = config;

@@ -2,15 +2,21 @@ const Joi = require('joi');
 
 module.exports = {
     signin: Joi.object().keys({
-        email: Joi.string().email().required(),
+        email: Joi.string()
+            .regex(/^\S+@\S+\.\S+$/)
+            .required(),
         password: Joi.string().required()
     }),
     request_reset: Joi.object().keys({
-        email: Joi.string().email().required()
+        email: Joi.string()
+            .regex(/^\S+@\S+\.\S+$/)
+            .required()
     }),
     change_password: Joi.object().keys({
         otp: Joi.number().integer().required(),
-        email: Joi.string().email().required(),
+        email: Joi.string()
+            .regex(/^\S+@\S+\.\S+$/)
+            .required(),
         password: Joi.string().required(),
         confirm_password: Joi.any()
             .equal(Joi.ref('password'))
@@ -20,7 +26,9 @@ module.exports = {
     }),
     signup: Joi.object().keys({
         name: Joi.string().required(),
-        email: Joi.string().email().required(),
+        email: Joi.string()
+            .regex(/^\S+@\S+\.\S+$/)
+            .required(),
         password: Joi.string().required(),
         confirm_password: Joi.any()
             .equal(Joi.ref('password'))
