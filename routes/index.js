@@ -3,7 +3,6 @@ const user = require('./user');
 const story = require('./story');
 const image = require('./image');
 const admin = require('./admin');
-const country = require('./country');
 
 const router = express.Router();
 
@@ -15,7 +14,5 @@ router.use('/stories', story);
 router.use('/images', image);
 /* admin routes */
 router.use('/admins', admin);
-/* country routes */
-router.use('/countries', country);
 
 module.exports = router;
