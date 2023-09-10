@@ -4,9 +4,12 @@ const story = require('./story');
 const image = require('./image');
 const admin = require('./admin');
 const country = require('./country');
+const auth = require('./auth');
 
 const router = express.Router();
 
+/* auth routes */
+router.use('/auth', auth);
 /* user routes */
 router.use('/users', user);
 /* story routes */

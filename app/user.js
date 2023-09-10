@@ -1,13 +1,7 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const User = require('../database/models/user');
 const schemaValidation = require('../validation/user');
-const crypt = require('../utils/crypt');
 const validate = require('../utils/validate');
-const config = require('../config');
-const ResetToken = require('../database/models/reset-tokens');
-const mail = require('../mail');
-const otpGenerator = require('otp-generator');
 const utils = require('../utils');
 const userUtils = require('../utils/user');
 

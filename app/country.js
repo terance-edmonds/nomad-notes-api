@@ -1,5 +1,6 @@
 const Country = require('../database/models/country');
 const schemaValidation = require('../validation/country');
+const commonValidation = require('../validation/common');
 const validate = require('../utils/validate');
 const utils = require('../utils');
 
@@ -61,7 +62,47 @@ module.exports = {
 
             return res.status(200).json({
                 status: 'success',
-                data: user
+                data: country
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                status: 'failed',
+                message: error.message
+            });
+        }
+    },
+    random: async (req, res) => {
+        try {
+            let query = req.query;
+            let params = req.params;
+
+            /* validate request data */
+            const validation = validate(commonValidation.random, query);
+            if (validation?.error) return res.status(400).json(validation.error);
+
+            let options = [{ $sample: { size: parseInt(query?.limit || '10') } }];
+            if (query.search || params.id) {
+                options = [
+                    { $sample: { size: parseInt(query?.limit || '10') } },
+                    {
+                        $match: {
+                            $and: [
+                                query.search
+                                    ? { name: { $regex: query.search, $options: 'i' } }
+                                    : {},
+                                params.id ? { _id: { $ne: utils.mongoID(params.id) } } : {}
+                            ]
+                        }
+                    }
+                ];
+            }
+
+            const countries = await Country.aggregate(options);
+
+            return res.status(200).json({
+                status: 'success',
+                data: countries
             });
         } catch (error) {
             console.log(error);
@@ -79,7 +120,9 @@ module.exports = {
             const validation = validate(schemaValidation.search, query);
             if (validation?.error) return res.status(400).json(validation.error);
 
-            const countries = await Country.find({ name: { $regex: query.search, $options: 'i' } });
+            const countries = await Country.find({
+                name: { $regex: query.search, $options: 'i' }
+            }).limit(query?.limit);
 
             return res.status(200).json({
                 status: 'success',
@@ -144,10 +187,10 @@ module.exports = {
             let params = req.params;
 
             /* validate request data */
-            const validation = validate(schemaValidation.remove, body);
+            const validation = validate(schemaValidation.remove, params);
             if (validation?.error) return res.status(400).json(validation.error);
 
-            const country = await Country.findById(utils.mongoID(body.id));
+            const country = await Country.findById(utils.mongoID(params.id));
 
             if (!country) {
                 return res.status(404).json({
@@ -156,7 +199,7 @@ module.exports = {
                 });
             }
 
-            await country.remove();
+            await country.deleteOne();
 
             return res.status(200).json({
                 status: 'success',
