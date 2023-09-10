@@ -69,6 +69,63 @@ module.exports = {
             });
         }
     },
+    random: async (req, res) => {
+        try {
+            let query = req.query;
+            let params = req.params;
+
+            /* validate request data */
+            const validation = validate(commonValidation.random, query);
+            if (validation?.error) return res.status(400).json(validation.error);
+
+            let options = [
+                { $sample: { size: parseInt(query?.limit || '10') } },
+                {
+                    $match: {
+                        approved: true
+                    }
+                }
+            ];
+            if (query.search || params.id) {
+                const matchConditions = [{ approved: true }];
+
+                if (query.search) {
+                    matchConditions.push({
+                        $or: [
+                            { country: { $regex: query.search, $options: 'i' } },
+                            { city: { $regex: query.search, $options: 'i' } }
+                        ]
+                    });
+                }
+
+                if (params.id) {
+                    matchConditions.push({ _id: { $ne: utils.mongoID(params.id) } });
+                }
+
+                options = [
+                    { $sample: { size: parseInt(query?.limit || '10') } },
+                    {
+                        $match: {
+                            $and: matchConditions
+                        }
+                    }
+                ];
+            }
+
+            const stories = await Story.aggregate(options);
+
+            return res.status(200).json({
+                status: 'success',
+                data: stories
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                status: 'failed',
+                message: error.message
+            });
+        }
+    },
     search: async (req, res) => {
         try {
             let body = req.body;

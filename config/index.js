@@ -2,19 +2,8 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const {
-    PORT,
-    NODE_ENV,
-    ENCRYPT_KEY,
-    APP_URL,
-    API_URL,
-    HASH,
-    HASH_REFRESH,
-    DB_CONNECTION,
-    MAIL_EMAIL,
-    MAIL_DOMAIN,
-    MAIL_PASSWORD
-} = process.env;
+const { PORT, NODE_ENV, ENCRYPT_KEY, APP_URL, API_URL, HASH, HASH_REFRESH, DB_CONNECTION } =
+    process.env;
 
 const config = {
     version: 'v1',
@@ -31,11 +20,6 @@ const config = {
     },
     server_urls: {
         api: API_URL
-    },
-    mail: {
-        email: MAIL_EMAIL,
-        domain: MAIL_DOMAIN,
-        password: MAIL_PASSWORD
     }
 };
 

@@ -7,5 +7,9 @@ module.exports = {
     all: Joi.object().keys({
         search: Joi.string().allow('', null),
         limit: Joi.number().integer().min(1).allow('', null)
+    }),
+    random: Joi.object().keys({
+        search: Joi.string().allow('', null),
+        limit: Joi.number().integer().min(1).required()
     })
 };

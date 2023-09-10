@@ -7,13 +7,7 @@ module.exports = {
             .required(),
         password: Joi.string().required()
     }),
-    request_reset: Joi.object().keys({
-        email: Joi.string()
-            .regex(/^\S+@\S+\.\S+$/)
-            .required()
-    }),
     change_password: Joi.object().keys({
-        otp: Joi.number().integer().required(),
         email: Joi.string()
             .regex(/^\S+@\S+\.\S+$/)
             .required(),
