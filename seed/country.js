@@ -11,8 +11,8 @@ const generateCountries = (num) => {
 
         countries.push({
             name: country,
-            description: faker.lorem.paragraph(),
-            image: faker.image.url()
+            description: faker.lorem.paragraphs(5),
+            image: faker.image.urlLoremFlickr({ category: 'city' })
         });
     }
 

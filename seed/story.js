@@ -1,6 +1,6 @@
 const { faker } = require('@faker-js/faker');
 
-const generateStories = (num) => {
+const generateStories = (num, approved) => {
     const stories = [];
 
     for (let i = 0; i < num; i++) {
@@ -10,7 +10,8 @@ const generateStories = (num) => {
             country: faker.location.country(),
             location: faker.location.street(),
             when: new Date().toISOString(),
-            image: faker.image.url()
+            image: faker.image.urlLoremFlickr({ category: 'nature' }),
+            approved: !!approved
         });
     }
 

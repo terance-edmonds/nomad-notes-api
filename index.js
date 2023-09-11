@@ -9,10 +9,7 @@ const routes = require('./routes');
 const app = express();
 
 // connect to mongoDB
-database.init();
-
-// seed
-// database.seed();
+database.init(true); //  to run seeds database.init(true);
 
 // express in json format
 app.use(express.json());
