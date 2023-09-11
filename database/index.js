@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const config = require('../config');
-const seedDB = require('../seed');
+const seedDB = require('../seed/index');
 
 module.exports = {
-    init: () => {
+    init: (runSeed = false) => {
         mongoose
             .connect(config.mongodb_con, {
                 useNewUrlParser: true,
@@ -11,6 +11,7 @@ module.exports = {
             })
             .then(() => {
                 console.log('>> Connected to the database <<');
+                if (runSeed) seedDB();
             })
             .catch((err) => {
                 console.log(`>> DB ERROR << \n ${err}`);
@@ -19,8 +20,5 @@ module.exports = {
                     console.log('>> Failed to connect to the database <<');
                 }
             });
-    },
-    seed: () => {
-        seedDB();
     }
 };

@@ -9,7 +9,7 @@ const generateUsers = (num, role) => {
     for (let i = 0; i < num; i++) {
         user.push({
             name: faker.internet.displayName(),
-            email: faker.internet.regex(/^\S+@\S+\.\S+$/),
+            email: faker.internet.email().toLowerCase(),
             password: bcrypt.hashSync('1234', salt),
             image: faker.image.avatarGitHub(),
             role: role
