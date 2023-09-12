@@ -262,9 +262,18 @@ module.exports = {
             const validation = validate(schemaValidation.state, body);
             if (validation?.error) return res.status(400).json(validation.error);
 
+            const story = await Story.findById(utils.mongoID(params.id));
+
+            if (!story) {
+                return res.status(404).json({
+                    status: 'failed',
+                    message: 'story not found'
+                });
+            }
+
             if (body.approved) {
                 const country = await Country.findOne({
-                    name: body.country
+                    name: story.country
                 });
 
                 if (!country) {
@@ -273,15 +282,6 @@ module.exports = {
                         message: 'country details not found, please add country details'
                     });
                 }
-            }
-
-            const story = await Story.findById(utils.mongoID(params.id));
-
-            if (!story) {
-                return res.status(404).json({
-                    status: 'failed',
-                    message: 'story not found'
-                });
             }
 
             story.approved = !!body.approved;
